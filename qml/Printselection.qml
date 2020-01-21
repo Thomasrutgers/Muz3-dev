@@ -9,7 +9,7 @@ MuseScore {
         console.log('------------------------------------------------------------------')
         console.log(selection[i].name.toUpperCase());
         console.log('------------------------------------------------------------------')
-        var keys = Object.keys(selection[i]);
+        var keys = Object.keys(selection[i]).sort();
         for (var j=0; j<keys.length; j++) {
           var value = selection[i][keys[j]]
           if (typeof value != 'undefined') console.log(keys[j], ':', value);
