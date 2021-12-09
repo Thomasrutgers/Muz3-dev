@@ -1,12 +1,11 @@
 public class MusescoreData {
 
-    private Note[] notes;
-    private Constraint[] constraints;
+    Note[] notes;
+    Constraint[] constraints;
 
     public Note[] getNotes() {
         return notes;
     }
-
 
     class Note {
         int tick;
