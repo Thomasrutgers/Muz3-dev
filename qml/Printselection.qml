@@ -6,12 +6,16 @@ MuseScore {
     try {
       var selection = (curScore.selection.elements)
       for (var i=0; i<selection.length; i++) {
+        //var obj = selection[i];
+        //var obj = selection[i].parent;
+        var obj = selection[i].parent.parent;
+        
         console.log('------------------------------------------------------------------')
-        console.log(selection[i].name.toUpperCase());
+        console.log(obj.name.toUpperCase());
         console.log('------------------------------------------------------------------')
-        var keys = Object.keys(selection[i]).sort();
+        var keys = Object.keys(obj).sort();
         for (var j=0; j<keys.length; j++) {
-          var value = selection[i][keys[j]]
+          var value = obj[keys[j]]
           if (typeof value != 'undefined') console.log(keys[j], ':', value);
         }
       }
