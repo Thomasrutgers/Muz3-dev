@@ -23,13 +23,10 @@ public class Muz3 {
         Note n2 = m.getPrevNote(n);
         Note n3 = m.getPrevNote(n2);
         Note n4 = m.getPrevNote(n3);
-        Note n5 = m.getPrevNote(n4);
-        System.out.println(n.getMsNote().getTick());
-        System.out.println(n2.getMsNote().getTick());
-        System.out.println(n3.getMsNote().getTick());
-        System.out.println(n4.getMsNote().getTick());
-        System.out.println(n5.getMsNote().getTick());
-
+        Note n5 = m.getNextNote(n4);
+        //System.out.println(EnhCalc.degreeInChromaticScale(2,-3));
+        //System.out.println(EnhCalc.keyAsDegree(-3));
+        System.out.println(EnhCalc.deltaPitchFromDiatonicAddition(14,-2,-3));
         //fileIO.writeJson(dataOut, outFile);
         //TimeUnit.SECONDS.sleep(2);
 
