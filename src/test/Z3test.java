@@ -6,7 +6,7 @@ import com.microsoft.z3.*;
 
 public class Z3test {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
         final Context context = new Context();
         final Solver solver = context.mkSimpleSolver();
@@ -26,6 +26,7 @@ public class Z3test {
             final Model model = solver.getModel();
             System.out.println(model.getConstInterp(a));
             System.out.println(model.getConstInterp(b));
+
         }
         if (status==Status.UNKNOWN) {
             System.out.println("Unknown solver status");

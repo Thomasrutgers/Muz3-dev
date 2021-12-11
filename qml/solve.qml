@@ -6,7 +6,9 @@ MuseScore {
   version:  "0.1.0"
   description: "Muz3 Solve"
   menuPath: "Plugins.Solve"
-
+  
+  property var selection: [];
+  
   FileIO {
     id: outFile
     source: { "c:/temp/invoke" + new Date().getTime() + "-out.json" }
@@ -29,41 +31,54 @@ MuseScore {
       cursor.voice    = 0;
       cursor.staffIdx = 0;
       cursor.rewind(Cursor.SCORE_START);
-      var selection = (curScore.selection.elements)
-      for (var i=0; i<selection.length; i++) {
-        var e = selection[i];
+      //iterate selection
+      for (var i=0; i<curScore.selection.elements.length; i++) {
+        var e =curScore.selection.elements[i];
+        selection.push(e); //store for later in a separate array
+        //get notes
         if (e.type == Element.NOTE) {
           var n = {};
           var s = e.parent.parent; //segment
           n.tick = s.tick;
           if (s.next != null) {
-          n.nextTick = s.next.tick
-        }
-        else n.nextTick = -1;
-        n.headGroup = e.headGroup;
+            n.nextTick = s.next.tick
+          }
+          else n.nextTick = -1;
+        if (e.headGroup == 0) n.fixed = true;
+        else n.fixed = false;
         n.pitch = e.pitch;
         n.tpc=e.tpc;
         cursor.rewindToTick(n.tick);
         n.keySignature=cursor.keySignature;
         n.track=e.track;
+        n.selectionIndex = i;
         dataOut.notes.push(n);
+        curScore.startCmd();
+        e.color="#ff0000";
+        curScore.endCmd();
+        console.log('--');
+          console.log(e.pitch);
       }
+      //get text
       if (e.type == Element.STAFF_TEXT) {
         var c = {};
         if (e.subStyle==21) { //normal staff text
           var s = e.parent; //segment
           c.tick = s.tick;
           c.track = e.track
+          c.constraintText = e.text;
+          c.selectionIndex = i;
           dataOut.constraints.push(c);
         }
       }
     }
     var outString = JSON.stringify(dataOut);
-    console.log("Wrote: outFile2.source");
+    console.log("Exporting notes....");
     outFile.write(outString);
     //homepath??
     //proc.start("java -jar " + outFile.homePath()+"/Documents/MuseScore3/Plugins/invoke.jar "+outFile.source+" "+inFile.source);
-    proc.start("java -jar C:/Users/thoma/OneDrive/Documents/MuseScore3/Plugins/invoke.jar "+outFile.source+" "+inFile.source);
+    proc.start("java -Djava.library.path=\"C:/prog/z3/bin\" -jar C:/Users/thoma/OneDrive/Documents/MuseScore3/Plugins/Muz3.jar "+outFile.source+" "+inFile.source);
+  
     }
     catch (err) {
     console.log(err.message);
@@ -73,18 +88,52 @@ MuseScore {
   QProcess {
     id: proc
     onFinished: {
+
+
+
       try {
-        console.log("Output:");
         console.log(proc.readAllStandardOutput());
-        console.log("Data in:");
         var inString = inFile.read();
         var dataIn = JSON.parse(inString);
-        console.log(dataIn.naam);
-        Qt.quit()
+        //noten matchen.
+        //geen rekening houden met akkoorden
+        //var selection = (curScore.selection.elements);
+        var cursor = curScore.newCursor();
+        cursor.voice    = 0;
+        cursor.staffIdx = 0;
+        curScore.startCmd();
+        //make notes black again
+        for (var i=0; i< selection.length;i++)
+        {
+        var e = selection[i];
+          if (e != null) {
+          if (e.type == Element.NOTE) {
+            e.color = "000000";
+          }
+          }
+        
+        }
+        //change notes based on selectionIndex
+        for(var i = 0; i < dataIn.notes.length; i++) {        
+          var e = selection[dataIn.notes[i].selectionIndex];
+          if (e != null) {
+          if (e.type == Element.NOTE) {
+          e.pitch = dataIn.notes[i].pitch;
+          e.tpc1 = dataIn.notes[i].tpc;
+          e.tpc2 = dataIn.notes[i].tpc;
+          console.log('--');
+          console.log(e.pitch);
+          }
+          }
+        }                    
+        curScore.endCmd();
+        Qt.quit();
       }
-      catch (err) {
-        console.log(err.message);
-      }
-    }
+    
+    catch (err) {
+      console.log(err.message);
+    }    
+ 
   }
-}
+  }
+  }

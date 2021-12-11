@@ -30,7 +30,7 @@ public class EnhCalc {
         return tpc;
     }
 
-    public static int deltaPitchFromDiatonicAddition(int tpc, int degreeDelta, int key) {
+    public static int pitchDeltaFromDiatonicDelta(int tpc, int degreeDelta, int key) {
         //how many pitches, when we jump to the next note belonging to scale?
         //for instance, in the key of G, adding 1 to a Ebb gives F#, a deltaPitch of 4
         //in the key of Bb, adding 1 to a## gives -2
@@ -60,14 +60,7 @@ public class EnhCalc {
             octaves = octaves - 1;
         }
         int newPitch = (keyDegreeInChromaticScale((newDegree-keyAsDegree(key)+7)%7, key))+ (octaves*12); //+7 to be sure of no negative modulus
-        //System.out.println(newPitch);
-        //D##: pitch =4
-        //Eb: pitch = 3
-        System.out.println(tpcDegree);
-        System.out.println(newDegree);
-        System.out.println(octaves);
-        System.out.println(tpcPitch);
-        System.out.println(newPitch);
+
         return newPitch - tpcPitch;
     }
 

@@ -101,9 +101,18 @@ class MSNote {
     }
 }
 class MSConstraint {
-    String constraintText; //from JSON data
-    int tick; //all these are initialized form JSON data
-    int nextTick;
+    private String constraintText; //from JSON data
+    private int tick; //all these are initialized form JSON data
+    private int nextTick;
+    private int selectionIndex;
+
+    public int getSelectionIndex() {
+        return selectionIndex;
+    }
+
+    public void setSelectionIndex(int selectionIndex) {
+        this.selectionIndex = selectionIndex;
+    }
 
     public String getConstraintText() {
         return constraintText;

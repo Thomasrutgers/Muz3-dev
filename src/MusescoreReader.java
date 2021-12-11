@@ -10,9 +10,11 @@ public class MusescoreReader
     MusescoreData data;
     ArrayList<Note> notes = new ArrayList<>();
     ArrayList<Constraint> constraints = new ArrayList<>();
+    ArrayList<Note> usedNotes = new ArrayList<>(); //not sure if this is the right place!
 
-
-
+    public ArrayList<Note> getUsedNotes() {
+        return usedNotes;
+    }
 
     public MusescoreReader(Context z3Context, MusescoreData data) {
         this.z3Context = z3Context;
@@ -21,7 +23,7 @@ public class MusescoreReader
             notes.add(new Note(msN,z3Context));
         }
         for (MSConstraint msC : data.getConstraints()) {
-            constraints.add(new Constraint(msC,z3Context, getConstraintNotes(msC)));
+            constraints.add(new Constraint(msC,z3Context, getConstraintNotes(msC),this));
         }
     }
 
@@ -41,7 +43,6 @@ public class MusescoreReader
         int closestTick = -1;
         Note closestNote = null;
         for (Note candidateNote : notes) { //candidate
-            //for now, works with text on segments, add fingerings / lines
             if (
                     (candidateNote.getStaff() == referenceNote.getStaff()) &&
                     (candidateNote.getMsNote().getNextTick() <= referenceNote.getMsNote().getTick()) &&
@@ -57,7 +58,6 @@ public class MusescoreReader
         int closestTick = -1;
         Note closestNote = null;
         for (Note candidateNote : notes) { //candidate
-            //for now, works with text on segments, add fingerings / lines
             if (
                     (candidateNote.getStaff() == referenceNote.getStaff()) &&
                             (candidateNote.getMsNote().getTick() >= referenceNote.getMsNote().getNextTick()) &&
@@ -84,4 +84,9 @@ public class MusescoreReader
     public void setConstraints(ArrayList<Constraint> constraints) {
         this.constraints = constraints;
     }
+
+    public void addUsedNote(Note n) { //again, this might not be the place!
+        if (!usedNotes.contains(n)) usedNotes.add(n);
+    }
+
 }

@@ -4,6 +4,7 @@
     <root id="archive" name="Muz3.jar">
       <element id="module-output" name="Muz3" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/google/code/gson/gson/2.8.9/gson-2.8.9.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../prog/z3/bin/com.microsoft.z3.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>
