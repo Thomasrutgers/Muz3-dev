@@ -1,19 +1,37 @@
+import com.microsoft.z3.Context;
+
+import java.util.ArrayList;
+
 public class Muz3 {
 
     public static void main(String[] args) {
+        if (args.length <2 ) {
+            System.err.println("Not enough arguments...");
+            System.exit(1);
+        }
         System.out.println("Setting up Z3...");
-        MusescoreData data;
+        MusescoreData dataIn;
         String inFile = args[0];
         String outFile = args[1];
         FileIO fileIO = new FileIO();
-        data = fileIO.loadJson(inFile);
-        for (int i =0; i< data.getNotes().length; i++) {
-            data.getNotes()[i].setPitch((data.getNotes()[i].getPitch() + 1));
-            data.getNotes()[i].setTpc((data.getNotes()[i].getTpc() + 7));
-        }
+        dataIn = fileIO.loadJson(inFile);
         System.out.println("Setting up Z3...");
-        fileIO.writeJson(data, outFile);
+        final Context context = new Context();
+        MusescoreReader m = new MusescoreReader(context,dataIn);
+        ArrayList<Note> notes = m.getNotes();
+        Note n = notes.get(5);
+        Note n2 = m.getPrevNote(n);
+        Note n3 = m.getPrevNote(n2);
+        Note n4 = m.getPrevNote(n3);
+        Note n5 = m.getPrevNote(n4);
+        System.out.println(n.getMsNote().getTick());
+        System.out.println(n2.getMsNote().getTick());
+        System.out.println(n3.getMsNote().getTick());
+        System.out.println(n4.getMsNote().getTick());
+        System.out.println(n5.getMsNote().getTick());
 
+        //fileIO.writeJson(dataOut, outFile);
+        //TimeUnit.SECONDS.sleep(2);
 
     }
 }

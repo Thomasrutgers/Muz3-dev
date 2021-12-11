@@ -1,3 +1,5 @@
+package test;
+
 import com.microsoft.z3.*;
 //linux: add DYLD_LIBRARY_PATH=...../z3/bin to environment variables
 //windows: add .../z3/bin to PATH
