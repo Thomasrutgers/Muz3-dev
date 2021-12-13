@@ -11,14 +11,14 @@ MuseScore {
   
   FileIO {
     id: outFile
-    source: { "c:/temp/invoke" + new Date().getTime() + "-out.json" }
+    source: { this.tempPath() + "/muz3" + new Date().getTime() + "-out.json" }
   }
 
   FileIO {
     id: inFile
     //temppath doesn't work? whats the right way to go?
     //source: { tempPath() +"/invoke" + new Date().getTime() + "-in.json" }
-    source: { "c:/temp/invoke" + new Date().getTime() + "-in.json" }
+    source: { this.tempPath() + "/muz3" + new Date().getTime() + "-in.json" }
   }
 
   onRun: {
@@ -77,7 +77,9 @@ MuseScore {
     outFile.write(outString);
     //homepath??
     //proc.start("java -jar " + outFile.homePath()+"/Documents/MuseScore3/Plugins/invoke.jar "+outFile.source+" "+inFile.source);
-    proc.start("java -Djava.library.path=\"C:/prog/z3/bin\" -jar C:/Users/thoma/OneDrive/Documents/MuseScore3/Plugins/Muz3.jar "+outFile.source+" "+inFile.source);
+
+    console.log("java -jar \""+this.filePath+"/Muz3.jar\" "+outFile.source+" "+inFile.source);
+    proc.start("java -jar \""+this.filePath+"/Muz3.jar\" "+outFile.source+" "+inFile.source);
   
     }
     catch (err) {
@@ -136,4 +138,6 @@ MuseScore {
  
   }
   }
+  
+
   }

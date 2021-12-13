@@ -1,7 +1,7 @@
 <component name="libraryTable">
-  <library name="com.microsoft.z3">
+  <library name="gson-2.8.9">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/com.microsoft.z3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/gson-2.8.9.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
